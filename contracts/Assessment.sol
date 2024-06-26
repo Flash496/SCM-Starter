@@ -56,4 +56,10 @@ contract Assessment {
         // emit the event
         emit Withdraw(_withdrawAmount);
     }
-}
+
+    function calculateSimpleInterest(uint256 principal, uint256 annualRate, uint256 timeInMonths) public pure returns (uint256) {
+        uint256 timeInYears = timeInMonths / 12;
+        uint256 interest = principal + ((principal * annualRate * timeInYears) / 100);
+        return interest;
+    }
+} 
