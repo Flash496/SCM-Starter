@@ -19,27 +19,18 @@ contract Assessment {
     }
 
     function deposit(uint _amount) public payable {
-        uint _previousBalance = balance;
-
-        // make sure this is the owner
+        uint previousBal = balance;
         require(msg.sender == owner, "You are not the owner of this account");
-
-        // perform transaction
         balance += _amount;
-
-        // assert transaction completed successfully
-        assert(balance == _previousBalance + _amount);
-
-        // emit the event
+        assert(balance == previousBal + _amount);
         emit Deposit(_amount);
     }
 
-    // custom error
     error InsufficientBalance(uint balance, uint withdrawAmount);
 
     function withdraw(uint _withdrawAmount) public {
         require(msg.sender == owner, "You are not the owner of this account");
-        uint _previousBalance = balance;
+        uint previousBal = balance;
         if (balance < _withdrawAmount) {
             revert InsufficientBalance({
                 balance: balance,
@@ -47,13 +38,8 @@ contract Assessment {
             });
         }
 
-        // withdraw the given amount
         balance -= _withdrawAmount;
-
-        // assert the balance is correct
-        assert(balance == (_previousBalance - _withdrawAmount));
-
-        // emit the event
+        assert(balance == (previousBal - _withdrawAmount));
         emit Withdraw(_withdrawAmount);
     }
 
