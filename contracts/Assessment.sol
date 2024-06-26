@@ -4,21 +4,21 @@ pragma solidity ^0.8.9;
 
 contract Assessment {
     address payable public owner;
-    uint256 public balance;
+    uint public balance;
 
-    event Deposit(uint256 amount);
-    event Withdraw(uint256 amount);
+    event Deposit(uint amount);
+    event Withdraw(uint amount);
 
     constructor(uint initBalance) payable {
         owner = payable(msg.sender);
         balance = initBalance;
     }
 
-    function getBalance() public view returns(uint256) {
+    function getBalance() public view returns(uint) {
         return balance;
     }
 
-    function deposit(uint256 _amount) public payable {
+    function deposit(uint _amount) public payable {
         uint _previousBalance = balance;
 
         // make sure this is the owner
@@ -35,9 +35,9 @@ contract Assessment {
     }
 
     // custom error
-    error InsufficientBalance(uint256 balance, uint256 withdrawAmount);
+    error InsufficientBalance(uint balance, uint withdrawAmount);
 
-    function withdraw(uint256 _withdrawAmount) public {
+    function withdraw(uint _withdrawAmount) public {
         require(msg.sender == owner, "You are not the owner of this account");
         uint _previousBalance = balance;
         if (balance < _withdrawAmount) {
@@ -57,9 +57,9 @@ contract Assessment {
         emit Withdraw(_withdrawAmount);
     }
 
-    function calculateSimpleInterest(uint256 principal, uint256 annualRate, uint256 timeInMonths) public pure returns (uint256) {
-        uint256 timeInYears = timeInMonths / 12;
-        uint256 interest = principal + ((principal * annualRate * timeInYears) / 100);
+    function calculateSimpleInterest(uint principal, uint annualRate, uint timeInMonths) public pure returns (uint) {
+        uint timeInYears = timeInMonths / 12;
+        uint interest = principal + ((principal * annualRate * timeInYears) / 100);
         return interest;
     }
 } 
